@@ -39,8 +39,6 @@ class DcosServerGroupCreator implements ServerGroupCreator {
       operation.putAll(stage.context)
     }
 
-    DcosContainerFinder.populateFromStage(operation, stage)
-
     return [[(OPERATION): operation]]
   }
 
