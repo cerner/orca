@@ -39,8 +39,6 @@ class DcosJobRunner implements JobRunner {
       operation.putAll(stage.context)
     }
 
-    DcosContainerFinder.populateFromStage(operation, stage)
-
     return [[(OPERATION): operation]]
   }
 }
