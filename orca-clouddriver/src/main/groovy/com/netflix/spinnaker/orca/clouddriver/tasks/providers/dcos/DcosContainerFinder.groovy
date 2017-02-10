@@ -20,7 +20,7 @@ class DcosContainerFinder {
       if (!image) {
         throw new IllegalStateException("No image found in context for pattern $imageDescription.pattern.")
       } else {
-        imageDescription = [registry: image.registry, tag: image.tag, repository: image.repository]
+        imageDescription = [registry: image.registry, tag: image.tag, repository: image.repository, imageId: buildImageId(image.registry, image.repository, image.tag)]
       }
     }
 
@@ -31,11 +31,21 @@ class DcosContainerFinder {
         if (trigger?.account == imageDescription.account && trigger?.repository == imageDescription.repository) {
           imageDescription.tag = trigger.tag
         }
+
+        imageDescription.imageId = buildImageId(imageDescription.registry, imageDescription.repository, imageDescription.tag)
       }
 
       if (!imageDescription.tag) {
         throw new IllegalStateException("No tag found for image ${imageDescription.registry}/${imageDescription.repository} in trigger context.")
       }
+    }
+  }
+
+  static String buildImageId(Object registry, Object repo, Object tag) {
+    if (registry) {
+      return String.format("%s/%s:%s", registry, repo, tag)
+    } else {
+      return String.format("%s:%s", repo, tag)
     }
   }
 }
