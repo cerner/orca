@@ -20,7 +20,10 @@ class DcosContainerFinder {
       if (!image) {
         throw new IllegalStateException("No image found in context for pattern $imageDescription.pattern.")
       } else {
-        imageDescription = [registry: image.registry, tag: image.tag, repository: image.repository, imageId: buildImageId(image.registry, image.repository, image.tag)]
+        imageDescription.registry = image.registry
+        imageDescription.tag = image.tag
+        imageDescription.repository = image.repository
+        imageDescription.imageId = buildImageId(image.registry, image.repository, image.tag)
       }
     }
 
