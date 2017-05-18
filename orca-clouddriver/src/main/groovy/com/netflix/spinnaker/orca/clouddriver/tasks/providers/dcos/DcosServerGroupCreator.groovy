@@ -16,6 +16,9 @@ class DcosServerGroupCreator implements ServerGroupCreator {
   List<Map> getOperations(Stage stage) {
     def operation = [:]
 
+    // TODO: this is side-effecty and not good... but it works.
+    stage.context.region = stage.context.region.replaceAll('/', '_')
+
     // If this stage was synthesized by a parallel deploy stage, the operation properties will be under 'cluster'.
     if (stage.context.containsKey("cluster")) {
       operation.putAll(stage.context.cluster as Map)
