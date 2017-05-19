@@ -17,6 +17,11 @@ class DcosServerGroupCreator implements ServerGroupCreator {
     def operation = [:]
 
     // TODO: this is side-effecty and not good... but it works.
+    //
+    // Have to do this here because during a deploy stage in a pipeline run, a disconnect between how the region is
+    // sent in from deck (which may contain forward slashes) and how the region is formatted and written by clouddriver
+    // (using underscores) causes the ParallelDeployStage to fail when trying to lookup server groups keyed by region.
+    // The map contains a region with underscores, but the lookup occurs using a region with forward slashes.
     stage.context.region = stage.context.region.replaceAll('/', '_')
 
     // If this stage was synthesized by a parallel deploy stage, the operation properties will be under 'cluster'.
